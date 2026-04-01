@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SASP · Předtisky</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #111418;
+    --bg3: #181c22;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --gold: #e8b84b;
+    --gold2: #f5d07a;
+    --text: #c8cdd6;
+    --text2: #7a8291;
+    --green: #3ddc97;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Rajdhani', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  header {
+    border-bottom: 1px solid var(--gold);
+    padding: 0 2rem;
+    background: var(--bg2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: 56px;
+  }
+
+  .badge {
+    background: var(--gold);
+    color: #0a0c0f;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    letter-spacing: .1em;
+  }
+
+  .header-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: .08em;
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 1.5rem;
+    min-height: calc(100vh - 56px);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 0 8px;
+    margin-bottom: 8px;
+    margin-top: 4px;
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all .15s;
+    letter-spacing: .03em;
+    line-height: 1.3;
+  }
+
+  .tab:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
+  .tab.active { background: rgba(232,184,75,.08); border-color: rgba(232,184,75,.3); color: var(--gold2); }
+  .tab-num { font-family: var(--mono); font-size: 10px; color: var(--text2); min-width: 18px; flex-shrink: 0; }
+  .tab.active .tab-num { color: var(--gold); }
+
+  .content { display: flex; flex-direction: column; gap: 1rem; }
+
+  .content-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content-title { font-family: var(--mono); font-size: 15px; color: var(--gold); letter-spacing: .06em; text-transform: uppercase; }
+  .content-subtitle { font-size: 12px; color: var(--text2); font-family: var(--mono); }
+
+  .template-box {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 1.1rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .line {
+    display: flex;
+    align-items: baseline;
+    min-height: 28px;
+    flex-wrap: wrap;
+  }
+
+  .spacer { height: 14px; }
+
+  .line-label {
+    color: var(--text);
+    white-space: pre;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .f {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(232,184,75,0.5);
+    color: var(--gold2);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 0 3px 1px 3px;
+    outline: none;
+    min-width: 60px;
+    flex: 1;
+    transition: border-color .15s, background .15s;
+    line-height: 1;
+  }
+
+  .f:focus { border-bottom-color: var(--gold); background: rgba(232,184,75,0.07); }
+  .f::placeholder { color: rgba(232,184,75,0.32); font-style: italic; }
+
+  .fa {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-left: 2px solid rgba(232,184,75,0.3);
+    color: var(--gold2);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 4px 0 4px 10px;
+    margin: 2px 0;
+    outline: none;
+    resize: none;
+    min-height: 36px;
+    line-height: 1.7;
+    transition: border-color .15s;
+    overflow: hidden;
+  }
+
+  .fa:focus { border-left-color: var(--gold); }
+  .fa::placeholder { color: rgba(232,184,75,0.3); font-style: italic; }
+
+  .static {
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 2px 0;
+  }
+
+  .btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 22px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all .15s;
+  }
+
+  .copy-btn:hover { background: rgba(232,184,75,.1); }
+  .copy-btn.success { border-color: var(--green); color: var(--green); background: rgba(61,220,151,.08); }
+
+  .reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all .15s;
+  }
+
+  .reset-btn:hover { background: var(--bg3); color: var(--text); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1rem 2rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: .06em;
+  }
+
+  @media (max-width: 750px) {
+    main { grid-template-columns: 1fr; padding: 1rem; }
+    .sidebar { flex-direction: row; flex-wrap: wrap; }
+    .tab { font-size: 12px; padding: 6px 9px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="badge">SASP</div>
+    <div class="header-title">Secure Document Terminal &nbsp;·&nbsp; Předtisky</div>
+    <div class="status"><div class="status-dot"></div>ONLINE</div>
+  </div>
+</header>
+
+<main>
+  <nav class="sidebar">
+    <div class="sidebar-label">// Dokumenty</div>
+    <button class="tab active" onclick="setTab(0)"><span class="tab-num">01</span>Nesouhlas s trestem</button>
+    <button class="tab" onclick="setTab(1)"><span class="tab-num">02</span>Podmíněný trest</button>
+    <button class="tab" onclick="setTab(2)"><span class="tab-num">03</span>Souhlas se zadržením</button>
+    <button class="tab" onclick="setTab(3)"><span class="tab-num">04</span>Ozbrojená loupež</button>
+    <button class="tab" onclick="setTab(4)"><span class="tab-num">05</span>Drogy (10-14)</button>
+    <button class="tab" onclick="setTab(5)"><span class="tab-num">06</span>Přepadení osob</button>
+    <button class="tab" onclick="setTab(6)"><span class="tab-num">07</span>Výslech osoby</button>
+    <button class="tab" onclick="setTab(7)"><span class="tab-num">08</span>Uzavření dálnice</button>
+  </nav>
+
+  <section class="content">
+    <div class="content-header">
+      <div class="content-title" id="doc-title"></div>
+      <div class="content-subtitle" id="doc-code"></div>
+    </div>
+    <div class="template-box" id="template-output"></div>
+    <div class="btn-row">
+      <button class="copy-btn" id="copy-btn" onclick="copyText()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M11 5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span id="copy-label">Kopírovat do schránky</span>
+      </button>
+      <button class="reset-btn" onclick="resetFields()">Vymazat pole</button>
+    </div>
+  </section>
+</main>
+
+<footer>SAN ANDREAS STATE POLICE &nbsp;·&nbsp; SECURE DOCUMENT TERMINAL &nbsp;·&nbsp; CLASSIFIED</footer>
+
+<script>
+function L(label, placeholder, width) {
+  return `<div class="line"><span class="line-label">${label}</span><input class="f" placeholder="${placeholder}" style="min-width:${width||120}px"></div>`;
+}
+const SP = `<div class="spacer"></div>`;
+function S(text) { return `<div class="static">${text}</div>`; }
+function TA(label, placeholder, rows) {
+  const h = (rows||2)*22+12;
+  return `<div class="static">${label}</div><textarea class="fa" placeholder="${placeholder}" style="min-height:${h}px" oninput="autoResize(this)"></textarea>`;
+}
+
+const templates = [
+  {
+    name: "Nesouhlas s trestem", code: "DOC-01",
+    html: () => [
+      S(`Vážený @Soudce / @Statni zastupce tímto žádám o vyjádření k rozhodnutí ve věci zkráceného řízení:`),
+      SP,
+      `<div class="line"><span class="line-label">Osoba </span><input class="f" placeholder="Jméno Příjmení" style="min-width:160px"><span class="line-label"> DOB: </span><input class="f" placeholder="DD.MM.YYYY" style="min-width:100px"><span class="line-label"> nesouhlasí s rozhodnutím státní ozbrojené složky ve věci zkráceného řízení pro </span><input class="f" placeholder="trestný čin" style="min-width:120px"></div>`,
+      SP,
+      `<div class="line"><span class="line-label">Výše uvedený(á) dne </span><input class="f" placeholder="datum" style="min-width:90px"><span class="line-label"> kolem </span><input class="f" placeholder="čas" style="min-width:60px"><span class="line-label"> vešel do klenotnictví se zbraní, kde rozbil výlohy a ukradl šperky, které si uložil do tašky. Po příjezdu SASP se dobrovolně vzdal a byl zadržen. Zbraň, kterou měl u sebe, nebyla registrována na jeho osobu a není ani držitelem zbrojního průkazu.</span></div>`,
+      SP,
+      TA('Důvod nesouhlasu s trestem:', 'Napište důvod nesouhlasu...'),
+      SP,
+      TA('Důkazní prostředky:', 'Napište důkazy...'),
+      SP,
+      `<div class="line"><span class="line-label">Výpis z rejstříku trestů: Výše uvedený byl již </span><input class="f" placeholder="počet" style="min-width:45px"><span class="line-label">x trestán pro </span><input class="f" placeholder="trestný čin" style="min-width:150px"></div>`,
+      SP,
+      S(`Děkuji,`), S(`S pozdravem`), S(`Sgt. Fidelius Marcelius`),
+    ].join('')
+  },
+  {
+    name: "Podmíněný trest", code: "DOC-02",
+    html: () => [
+      S(`Vážený @Soudce @Statni zastupce @Captain`),
+      SP,
+      `<div class="line"><span class="line-label">Žádám o podmíněný odklad trestu pro </span><input class="f" placeholder="Jméno Příjmení" style="min-width:160px"><span class="line-label">&nbsp;</span><input class="f" placeholder="Datum narození" style="min-width:110px"></div>`,
+      SP,
+      L('Dopustil se: ', 'trestný čin', 220),
+      SP,
+      TA('Popis situace:', 'Napište popis situace...', 3),
+      SP,
+      TA('Důkazní prostředky:', 'Napište důkazy...'),
+      SP,
+      S(`Pán má čistý trestný rejstřík a po čas výslechu spolupracoval.`),
+      `<div class="line"><span class="line-label">Navrhovaný trest: </span><input class="f" placeholder="počet" style="min-width:45px"><span class="line-label"> rok(y) podmíněný trest</span></div>`,
+      SP,
+      S(`Děkuji,`), S(`S pozdravem`), S(`Sgt. Fidelius Marcelius`),
+    ].join('')
+  },
+  {
+    name: "Souhlas se zadržením", code: "DOC-03",
+    html: () => [
+      S(`Vážený @Soudce @Statni zastupce`),
+      SP,
+      `<div class="line"><span class="line-label">Žádám o souhlas se zadržením na osobu </span><input class="f" placeholder="Jméno Příjmení" style="min-width:160px"><span class="line-label">&nbsp;</span><input class="f" placeholder="Datum narození" style="min-width:110px"></div>`,
+      SP,
+      `<div class="line"><span class="line-label">Osoba je podezřelá ze spáchání </span><input class="f" placeholder="trestný čin" style="min-width:180px"></div>`,
+      SP,
+      TA('Popis události:', 'Datum, čas, místo, okolnosti...', 3),
+      SP,
+      S(`Děkuji,`), S(`S pozdravem`), S(`Sgt. Fidelius Marcelius`),
+    ].join('')
+  },
+  {
+    name: "Ozbrojená loupež", code: "DOC-04",
+    html: () => [
+      `<div class="line"><span class="line-label">**10-68 </span><input class="f" placeholder="XXXXX" style="min-width:80px"><span class="line-label"> (PC: </span><input class="f" placeholder="XXXX" style="min-width:65px"><span class="line-label">) – </span><input class="f" placeholder="DD.MM.YYYY" style="min-width:100px"><span class="line-label"> v </span><input class="f" placeholder="HH:MM" style="min-width:55px"><span class="line-label">**</span></div>`,
+      SP,
+      L('**Velitel akce:** ', 'jméno', 160),
+      L('**Vyjednávač:** ', 'jméno', 160),
+      SP,
+      TA('**Rukojmí:**', 'Seznam rukojmí...'),
+      SP,
+      TA('**Suspeeti:**', 'Seznam podezřelých...'),
+      SP,
+      TA('**Postup vyjednavače/velitele:**', 'Popis postupu...', 3),
+    ].join('')
+  },
+  {
+    name: "Drogy (10-14)", code: "DOC-05",
+    html: () => [
+      L('**Jméno příjmení:::** ', 'Jméno Příjmení', 180),
+      L('**DOB::** ', 'DD.MM.YYYY', 110),
+      SP,
+      `<div class="line"><span class="line-label">**Droga:** </span><input class="f" placeholder="typ drogy" style="min-width:120px"><span class="line-label"> (typ drogy a množstvo)</span></div>`,
+      SP,
+      `<div class="line"><span class="line-label">**Situace:** </span><input class="f" placeholder="oblast" style="min-width:100px"><span class="line-label"> – </span><input class="f" placeholder="krátký popis" style="min-width:180px"></div>`,
+      SP,
+      S(`- potrebné každú osobu nafotiť (mug shot)`),
+      S(`- označiť @GIU`),
+    ].join('')
+  },
+  {
+    name: "Přepadení osob", code: "DOC-06",
+    html: () => [
+      L('**Jméno a příjmení:** ', 'Jméno Příjmení', 180),
+      L('**Datum narození:** ', 'DD.MM.YYYY', 110),
+      L('**Tel. číslo:** ', '+420 xxx xxx xxx', 150),
+      L('**Email:** ', 'email@example.com', 180),
+      SP,
+      TA('**Výpověď poškozeného:**', 'Výpověď poškozeného...', 3),
+      SP,
+      TA('**Odcizené věci:**', 'Seznam odcizených věcí...'),
+      SP,
+      L('**Zranění:** ', 'popis zranění', 200),
+    ].join('')
+  },
+  {
+    name: "Výslech osoby", code: "DOC-07",
+    html: () => [
+      `<div class="line"><span class="line-label">Výslech suspecta/rukojmího/podezřelého/svědka z akce </span><input class="f" placeholder="název akce" style="min-width:100px"><span class="line-label"> v </span><input class="f" placeholder="čas a datum" style="min-width:130px"></div>`,
+      SP,
+      L('Jméno a příjmení: ', 'Jméno Příjmení', 180),
+      L('Datum narození: ', 'DD.MM.YYYY', 110),
+      L('Tel. číslo: ', '+420 xxx xxx xxx', 150),
+      SP,
+      TA('Výslech:', 'Průběh výslechu...', 4),
+      SP,
+      S(`Sgt. Fidelius Marcelius`),
+    ].join('')
+  },
+  {
+    name: "Uzavření dálnice", code: "DOC-08",
+    html: () => [
+      `<div class="line"><span class="line-label">/pol Dálnice </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="line-label"> je uzavřena mezi body </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="line-label"> z důvodu </span><input class="f" placeholder="důvod" style="min-width:120px"><span class="line-label">. Uzavřená oblast by mohla být pro občany nebezpečná a mohli byste zde dojít k újmě, prosíme tedy, abyste do oblasti nevatupovali, dbali výzev policie a použili objízdné trasy. Jinak se vystavujete riziku trestního stíhání dle Trestního zákoníku SA, Část 2, Hlava 7, §59 – Neuposlechnutí výzvy úřední osoby.</span></div>`,
+    ].join('')
+  },
+];
+
+let current = 0;
+
+function setTab(i) {
+  current = i;
+  document.querySelectorAll('.tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
+  document.getElementById('doc-title').textContent = templates[i].name;
+  document.getElementById('doc-code').textContent = templates[i].code;
+  document.getElementById('template-output').innerHTML = templates[i].html();
+  document.getElementById('copy-btn').classList.remove('success');
+  document.getElementById('copy-label').textContent = 'Kopírovat do schránky';
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function getFilledText() {
+  const box = document.getElementById('template-output');
+  let lines = [];
+  let cur = '';
+
+  function walk(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      cur += node.textContent;
+    } else if (node.tagName === 'INPUT') {
+      cur += node.value || node.placeholder;
+    } else if (node.tagName === 'TEXTAREA') {
+      if (cur.trim()) { lines.push(cur); cur = ''; }
+      lines.push(node.value || node.placeholder);
+    } else if (node.classList && node.classList.contains('spacer')) {
+      if (cur.trim()) { lines.push(cur); cur = ''; }
+      lines.push('');
+    } else if (node.classList && (node.classList.contains('line') || node.classList.contains('static'))) {
+      cur = '';
+      node.childNodes.forEach(walk);
+      lines.push(cur);
+      cur = '';
+    } else {
+      node.childNodes.forEach(walk);
+    }
+  }
+
+  box.childNodes.forEach(walk);
+  if (cur.trim()) lines.push(cur);
+  return lines.join('\n');
+}
+
+function copyText() {
+  const text = getFilledText();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.classList.add('success');
+    document.getElementById('copy-label').textContent = 'Zkopírováno!';
+    setTimeout(() => {
+      btn.classList.remove('success');
+      document.getElementById('copy-label').textContent = 'Kopírovat do schránky';
+    }, 2500);
+  });
+}
+
+function resetFields() {
+  document.querySelectorAll('.f, .fa').forEach(el => {
+    el.value = '';
+    if (el.tagName === 'TEXTAREA') autoResize(el);
+  });
+}
+
+setTab(0);
+</script>
+</body>
+</html>

@@ -7,21 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-deep:   #0d1117;
-  --bg-base:   #161b22;
-  --bg-card:   #1c2333;
-  --bg-hover:  #21273a;
-  --bg-active: #1f3a5f;
-  --border:    rgba(255,255,255,0.06);
-  --border2:   rgba(255,255,255,0.11);
-  --blue:      #388bfd;
-  --blue2:     #58a6ff;
+  --bg-deep:   #060a0f;
+  --bg-base:   #0c1118;
+  --bg-card:   #131a24;
+  --bg-hover:  #192030;
+  --bg-active: #0d1e3a;
+  --border:    rgba(255,255,255,0.05);
+  --border2:   rgba(255,255,255,0.09);
+  --blue:      #4d9ef7;
+  --blue2:     #70b5ff;
   --gold:      #e8b84b;
   --gold2:     #f5d07a;
-  --text:      #c9d1d9;
-  --text2:     #8b949e;
-  --text3:     #6e7681;
-  --green:     #3fb950;
+  --text:      #cdd6e0;
+  --text2:     #6b7d91;
+  --text3:     #3d4f60;
+  --green:     #34d058;
   --red:       #f85149;
   --mono:      'Share Tech Mono', monospace;
   --sans:      'Inter', sans-serif;
@@ -239,32 +239,35 @@ header, .shell, #login-screen { position: relative; z-index: 2; }
 
 /* Sidebar */
 .sidebar {
-  width: 220px; flex-shrink: 0;
+  width: 230px; flex-shrink: 0;
   background: var(--bg-base);
-  border-right: 1px solid var(--border2);
+  border-right: 2px solid rgba(77,158,247,0.15);
   display: flex; flex-direction: column;
   overflow-y: auto;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.6rem;
+  box-shadow: 2px 0 20px rgba(0,0,0,0.4);
 }
 
 .sidebar-section {
-  font-size: 10px; font-weight: 600;
-  color: var(--text3); letter-spacing: .1em; text-transform: uppercase;
-  padding: 0 8px; margin: 12px 0 6px;
+  font-size: 9px; font-weight: 700;
+  color: var(--blue); letter-spacing: .14em; text-transform: uppercase;
+  padding: 0 10px; margin: 14px 0 6px;
+  opacity: 0.7;
 }
 
 .sidebar-section:first-child { margin-top: 0; }
 
 .tab {
   display: flex; align-items: center; gap: 10px;
-  padding: 7px 10px; border: none; border-radius: 6px;
+  padding: 8px 10px; border: none; border-radius: 6px;
   background: transparent; color: var(--text2);
   font-family: var(--sans); font-size: 13px; font-weight: 400;
   cursor: pointer; text-align: left; transition: all .12s;
-  width: 100%; margin-bottom: 1px;
+  width: 100%; margin-bottom: 2px;
+  border-left: 2px solid transparent;
 }
-.tab:hover { background: var(--bg-hover); color: var(--text); }
-.tab.active { background: var(--bg-active); color: var(--blue2); font-weight: 500; }
+.tab:hover { background: var(--bg-hover); color: var(--text); border-left-color: rgba(77,158,247,0.25); }
+.tab.active { background: var(--bg-active); color: var(--blue2); font-weight: 600; border-left-color: var(--blue); }
 
 .tab-icon {
   width: 16px; height: 16px; flex-shrink: 0;
@@ -635,8 +638,7 @@ const templates = [
       SP,
       `<div class="line"><span class="line-label">**Situace:** </span><input class="f" placeholder="oblast" style="min-width:100px"><span class="line-label"> – </span><input class="f" placeholder="krátký popis" style="min-width:180px"></div>`,
       SP,
-      S(`potrebné každú osobu nafotiť (mug shot)`),
-      S(`označiť @GIU`),
+
     ].join('')
   },
   {
@@ -671,7 +673,11 @@ const templates = [
   {
     name: "Uzavření dálnice", code: "DOC-08",
     html: () => [
-      `<div class="line"><span class="line-label">/pol Dálnice </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="line-label"> je uzavřena mezi body </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="line-label"> z důvodu </span><input class="f" placeholder="důvod" style="min-width:120px"><span class="line-label">. Uzavřená oblast by mohla být pro občany nebezpečná a mohli byste zde dojít k újmě, prosíme tedy, abyste do oblasti nevstupovali, dbali výzev policie a použili objízdné trasy. Jinak se vystavujete riziku trestního stíhání dle Trestního zákoníku SA, Část 2, Hlava 7, §59 – Neuposlechnutí výzvy úřední osoby.</span></div>`,
+      `<div class="line"><span class="line-label">/pol Dálnice </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="line-label"> je uzavřena mezi body </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="line-label"> z důvodu </span><input class="f" placeholder="důvod" style="min-width:120px"><span class="line-label">.</span></div>`,
+      SP,
+      S(`Uzavřená oblast by mohla být pro občany nebezpečná a mohli byste zde dojít k újmě, prosíme tedy, abyste do oblasti nevstupovali.`),
+      SP,
+      S(`Dbejte výzev policie a použijte objízdné trasy. Jinak se vystavujete riziku trestního stíhání dle Trestního zákoníku SA, Část 2, Hlava 7, §59 – Neuposlechnutí výzvy úřední osoby.`),
     ].join('')
   },
 ];

@@ -344,11 +344,266 @@
     .tab { width: auto; font-size: 12px; padding: 6px 9px; }
     .content { padding: 1rem; }
   }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8,10,13,0.97);
+  }
+
+  .ticker-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #e8b84b;
+    color: #0a0c0f;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    padding: 5px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 101;
+  }
+
+  .ticker-bar.bottom {
+    top: auto;
+    bottom: 0;
+  }
+
+  .ticker-content {
+    display: inline-block;
+    animation: ticker 25s linear infinite;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .login-box {
+    border: 1px solid var(--gold);
+    padding: 2.5rem 2.8rem;
+    width: 420px;
+    position: relative;
+    background: rgba(10,12,15,0.95);
+  }
+
+  .login-box::before, .login-box::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--gold);
+    border-style: solid;
+  }
+  .login-box::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  .login-box::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+  .login-logo {
+    text-align: center;
+    margin-bottom: 1.6rem;
+  }
+
+  .login-logo-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .login-logo-title {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: .08em;
+    line-height: 1;
+  }
+
+  .login-logo-desc {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: .1em;
+    margin-top: 4px;
+  }
+
+  .login-status-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border2);
+    padding: 10px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+
+  .login-status-item { display: flex; flex-direction: column; gap: 2px; }
+  .login-status-label { color: var(--text2); }
+  .login-status-value { color: var(--green); }
+  .login-status-value.red { color: #e85b5b; }
+  .login-status-value.yellow { color: var(--gold); }
+
+  .login-field-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    gap: 12px;
+  }
+
+  .login-field-label {
+    color: var(--text2);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  .login-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--gold2);
+    font-family: var(--mono);
+    font-size: 13px;
+    width: 100%;
+    letter-spacing: .05em;
+  }
+
+  .login-input::placeholder { color: rgba(232,184,75,0.25); }
+
+  select.login-input option { background: #0a0c0f; color: var(--gold2); }
+
+  .login-btn {
+    margin-top: 1.4rem;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .login-btn:hover { background: rgba(232,184,75,.12); }
+
+  .login-footer {
+    margin-top: 1.4rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: .06em;
+    line-height: 1.8;
+  }
+
+  .login-footer a { color: var(--gold); text-decoration: none; }
+  .login-footer .danger { color: #e85b5b; }
 </style>
 </head>
 <body>
 
-<header>
+<div id="login-screen">
+  <!-- Top ticker -->
+  <div class="ticker-bar">
+    <span class="ticker-content">⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; ⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; ⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; ⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;</span>
+  </div>
+  <!-- Bottom ticker -->
+  <div class="ticker-bar bottom">
+    <span class="ticker-content">⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; ⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; ⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; ⚠ RESTRICTED ACCESS – LAW ENFORCEMENT ONLY &nbsp;&nbsp;&nbsp;</span>
+  </div>
+
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-sub">San Andreas State Police</div>
+      <div class="login-logo-title">VSTUP DO<br>PŘEDTISKU</div>
+      <div class="login-logo-desc">DOCUMENT TERMINAL · OS V3.2.1 · CLASSIFIED</div>
+    </div>
+
+    <div class="login-status-row">
+      <div class="login-status-item">
+        <span class="login-status-label">SÍŤOVÉ PŘIPOJENÍ:</span>
+        <span class="login-status-value">AKTIVNÍ</span>
+      </div>
+      <div class="login-status-item">
+        <span class="login-status-label">ŠIFROVÁNÍ:</span>
+        <span class="login-status-value">AES-256</span>
+      </div>
+      <div class="login-status-item">
+        <span class="login-status-label">PŘÍSTUP:</span>
+        <span class="login-status-value yellow">OMEZENÝ</span>
+      </div>
+      <div class="login-status-item">
+        <span class="login-status-label">ZÁZNAM AKTIVIT:</span>
+        <span class="login-status-value red">ZAPNUT</span>
+      </div>
+    </div>
+
+    <div class="login-field-row">
+      <div class="login-field-label">Hodnost</div>
+      <select class="login-input" id="login-rank">
+        <option value="">— vyberte hodnost —</option>
+        <option value="Cadet">Cadet</option>
+        <option value="Trooper">Trooper</option>
+        <option value="Senior Trooper">Senior Trooper</option>
+        <option value="Master Trooper">Master Trooper</option>
+        <option value="Corporal">Corporal</option>
+        <option value="Sergeant">Sergeant</option>
+        <option value="Staff Sergeant">Staff Sergeant</option>
+        <option value="Lieutenant">Lieutenant</option>
+        <option value="Captain">Captain</option>
+        <option value="Major">Major</option>
+        <option value="Commander">Commander</option>
+        <option value="Deputy Commissioner">Deputy Commissioner</option>
+        <option value="Commissioner">Commissioner</option>
+      </select>
+    </div>
+
+    <div class="login-field-row">
+      <div class="login-field-label">Jméno</div>
+      <input class="login-input" id="login-firstname" placeholder="Jméno" autocomplete="off">
+    </div>
+
+    <div class="login-field-row">
+      <div class="login-field-label">Příjmení</div>
+      <input class="login-input" id="login-lastname" placeholder="Příjmení" autocomplete="off">
+    </div>
+
+    <button class="login-btn" onclick="doLogin()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 14H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h3M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      AUTORIZOVAT A VSTOUPIT
+    </button>
+
+    <div class="login-footer">
+      © 2026 SASP · EVIDENCE SYSTEM | NATHANIEL HARTMAN |<br>
+      <span class="danger">NEOPRÁVNĚNÝ PŘÍSTUP JE TRESTNÝ ČIN</span><br>
+      <a href="#">O APLIKACI</a> – <a href="#">NÁPOVĚDA</a>
+    </div>
+  </div>
+</div>
+
+
   <div class="header-inner">
     <div class="badge">SASP</div>
     <div class="header-title">Secure Document Terminal &nbsp;·&nbsp; Předtisky</div>
@@ -388,6 +643,28 @@
 <footer>SAN ANDREAS STATE POLICE &nbsp;·&nbsp; SECURE DOCUMENT TERMINAL &nbsp;·&nbsp; CLASSIFIED</footer>
 
 <script>
+// ── LOGIN ──
+let officerName = 'Sgt. Fidelius Marcelius';
+
+function doLogin() {
+  const rank = document.getElementById('login-rank').value;
+  const first = document.getElementById('login-firstname').value.trim();
+  const last = document.getElementById('login-lastname').value.trim();
+  if (!rank || !first || !last) {
+    alert('Vyplňte prosím hodnost, jméno a příjmení.');
+    return;
+  }
+  officerName = `${rank} | ${first} ${last}`;
+  document.getElementById('login-screen').style.display = 'none';
+  setTab(0);
+}
+
+// Allow Enter key on login fields
+['login-rank','login-firstname','login-lastname'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+});
+
 function L(label, placeholder, width) {
   return `<div class="line"><span class="line-label">${label}</span><input class="f" placeholder="${placeholder}" style="min-width:${width||120}px"></div>`;
 }
@@ -414,7 +691,7 @@ const templates = [
       SP,
       `<div class="line"><span class="line-label">Výpis z rejstříku trestů: Výše uvedený byl již </span><input class="f" placeholder="počet" style="min-width:45px"><span class="line-label">x trestán pro </span><input class="f" placeholder="trestný čin" style="min-width:150px"></div>`,
       SP,
-      S(`Děkuji,`), S(`S pozdravem`), S(`Sgt. Fidelius Marcelius`),
+      S(`Děkuji,`), S(`S pozdravem`), S(`${officerName}`),
     ].join('')
   },
   {
@@ -433,7 +710,7 @@ const templates = [
       S(`Pán má čistý trestný rejstřík a po čas výslechu spolupracoval.`),
       `<div class="line"><span class="line-label">Navrhovaný trest: </span><input class="f" placeholder="počet" style="min-width:45px"><span class="line-label"> rok(y) podmíněný trest</span></div>`,
       SP,
-      S(`Děkuji,`), S(`S pozdravem`), S(`Sgt. Fidelius Marcelius`),
+      S(`Děkuji,`), S(`S pozdravem`), S(`${officerName}`),
     ].join('')
   },
   {
@@ -447,7 +724,7 @@ const templates = [
       SP,
       TA('Popis události:', 'Datum, čas, místo, okolnosti...', 3),
       SP,
-      S(`Děkuji,`), S(`S pozdravem`), S(`Sgt. Fidelius Marcelius`),
+      S(`Děkuji,`), S(`S pozdravem`), S(`${officerName}`),
     ].join('')
   },
   {
@@ -505,7 +782,7 @@ const templates = [
       SP,
       TA('Výslech:', 'Průběh výslechu...', 4),
       SP,
-      S(`Sgt. Fidelius Marcelius`),
+      S(`${officerName}`),
     ].join('')
   },
   {

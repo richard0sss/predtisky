@@ -133,7 +133,7 @@ body{background:var(--bg);}
 .map-card{flex:1;min-width:0;}
 .map-body{flex:1;overflow:hidden;position:relative;cursor:grab;background:#080a0e;min-height:0;}
 .map-body:active{cursor:grabbing;}
-.map-img{position:absolute;image-rendering:crisp-edges;user-select:none;transform-origin:0 0;will-change:transform;}
+.map-img{position:absolute;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;user-select:none;transform-origin:0 0;will-change:transform;}
 .map-controls{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:10;}
 .map-btn{width:26px;height:26px;border-radius:4px;background:rgba(16,19,24,0.92);border:1px solid var(--border3);color:var(--white);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;user-select:none;}
 .map-btn:hover{background:var(--card2);}
@@ -431,23 +431,25 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 /* WEATHER */
 const WX=[
-  {icon:'☀️',temp:28,desc:'Jasno',hum:45,wind:8,vis:12,feel:30},
-  {icon:'⛅',temp:22,desc:'Částečně oblačno',hum:58,wind:14,vis:10,feel:21},
-  {icon:'🌤',temp:25,desc:'Převážně slunečno',hum:52,wind:11,vis:11,feel:24},
-  {icon:'🌫',temp:17,desc:'Mlha',hum:88,wind:5,vis:2,feel:15},
-  {icon:'🌧',temp:14,desc:'Déšť',hum:92,wind:22,vis:6,feel:11},
-  {icon:'⛈',temp:18,desc:'Bouřka',hum:85,wind:35,vis:4,feel:15},
-  {icon:'🌬',temp:16,desc:'Silný vítr',hum:55,wind:50,vis:9,feel:10},
+  {icon:'☀️',tempC:28,desc:'Jasno',hum:45,windKmh:8,vis:12,feelC:30},
+  {icon:'⛅',tempC:22,desc:'Částečně oblačno',hum:58,windKmh:14,vis:10,feelC:21},
+  {icon:'🌤',tempC:25,desc:'Převážně slunečno',hum:52,windKmh:11,vis:11,feelC:24},
+  {icon:'🌫',tempC:17,desc:'Mlha',hum:88,windKmh:5,vis:2,feelC:15},
+  {icon:'🌧',tempC:14,desc:'Déšť',hum:92,windKmh:22,vis:6,feelC:11},
+  {icon:'⛈',tempC:18,desc:'Bouřka',hum:85,windKmh:35,vis:4,feelC:15},
+  {icon:'🌬',tempC:16,desc:'Silný vítr',hum:55,windKmh:50,vis:9,feelC:10},
 ];
+function cToF(c){return Math.round(c*9/5+32);}
+function kmhToMph(k){return Math.round(k*0.621371);}
 function updateWeather(){
   const w=WX[Math.floor(Math.random()*WX.length)];
   document.getElementById('w-icon').textContent=w.icon;
-  document.getElementById('w-temp').textContent=w.temp+'°C';
+  document.getElementById('w-temp').textContent=cToF(w.tempC)+'°F';
   document.getElementById('w-desc').textContent=w.desc;
   document.getElementById('w-hum').textContent=w.hum+'%';
-  document.getElementById('w-wind').textContent=w.wind+' km/h';
-  document.getElementById('w-vis').textContent=w.vis+' km';
-  document.getElementById('w-feel').textContent=w.feel+'°C';
+  document.getElementById('w-wind').textContent=kmhToMph(w.windKmh)+' mph';
+  document.getElementById('w-vis').textContent=Math.round(w.vis*0.621371)+' mi';
+  document.getElementById('w-feel').textContent=cToF(w.feelC)+'°F';
 }
 function updateDate(){
   const d=new Date();

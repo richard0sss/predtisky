@@ -133,7 +133,7 @@ body{background:var(--bg);}
 .map-card{flex:1;min-width:0;}
 .map-body{flex:1;overflow:hidden;position:relative;cursor:grab;background:#080a0e;min-height:0;}
 .map-body:active{cursor:grabbing;}
-.map-img{position:absolute;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;user-select:none;transform-origin:0 0;will-change:transform;}
+.map-img{position:absolute;image-rendering:auto;image-rendering:-webkit-optimize-contrast;image-rendering:high-quality;user-select:none;transform-origin:0 0;will-change:transform;}
 .map-controls{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:10;}
 .map-btn{width:26px;height:26px;border-radius:4px;background:rgba(16,19,24,0.92);border:1px solid var(--border3);color:var(--white);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;user-select:none;}
 .map-btn:hover{background:var(--card2);}
@@ -328,7 +328,7 @@ body{background:var(--bg);}
               <div style="margin-left:auto;font-family:var(--mono);font-size:8px;color:var(--text3);">Scroll=zoom · Táhni=pohyb</div>
             </div>
             <div class="map-body" id="map-body">
-              <img class="map-img" id="map-img" src="map.gif" alt="GTA Map" draggable="false">
+              <img class="map-img" id="map-img" src="map.png" alt="GTA Map" draggable="false">
               <div class="map-controls">
                 <div class="map-btn" onclick="mapZoom(0.3)">+</div>
                 <div class="map-btn" onclick="mapZoom(-0.3)">−</div>

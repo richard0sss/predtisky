@@ -133,7 +133,7 @@ body{background:var(--bg);}
 .map-card{flex:1;min-width:0;}
 .map-body{flex:1;overflow:hidden;position:relative;cursor:grab;background:#080a0e;min-height:0;}
 .map-body:active{cursor:grabbing;}
-.map-img{position:absolute;image-rendering:auto;image-rendering:-webkit-optimize-contrast;image-rendering:high-quality;user-select:none;transform-origin:0 0;will-change:transform;}
+.map-img{position:absolute;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;user-select:none;transform-origin:0 0;will-change:transform;}
 .map-controls{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:10;}
 .map-btn{width:26px;height:26px;border-radius:4px;background:rgba(16,19,24,0.92);border:1px solid var(--border3);color:var(--white);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;user-select:none;}
 .map-btn:hover{background:var(--card2);}
@@ -267,6 +267,8 @@ body{background:var(--bg);}
       <button class="ni" id="ni-d6" onclick="showDoc(6)"><span class="tnum">07</span>Výslech osoby</button>
       <button class="ni" id="ni-d7" onclick="showDoc(7)"><span class="tnum">08</span>Uzavření dálnice</button>
       <button class="ni" id="ni-d8" onclick="showDoc(8)"><span class="tnum">09</span>Uzavření oblasti</button>
+      <button class="ni" id="ni-d9" onclick="showDoc(9)"><span class="tnum">10</span>Odcizená výbava</button>
+      <button class="ni" id="ni-d10" onclick="showDoc(10)"><span class="tnum">11</span>Trestní oznámení</button>
       <div class="ls-sec">Nástroje</div>
       <button class="ni" id="ni-no" onclick="showV('no')">
         <svg class="nico" viewBox="0 0 12 12" fill="none"><rect x=".5" y=".5" width="11" height="11" rx="1.2" stroke="currentColor" stroke-width="1.1"/><path d="M3 4h6M3 6.5h6M3 9h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
@@ -328,7 +330,7 @@ body{background:var(--bg);}
               <div style="margin-left:auto;font-family:var(--mono);font-size:8px;color:var(--text3);">Scroll=zoom · Táhni=pohyb</div>
             </div>
             <div class="map-body" id="map-body">
-              <img class="map-img" id="map-img" src="map.png" alt="GTA Map" draggable="false">
+              <img class="map-img" id="map-img" src="map.gif" alt="GTA Map" draggable="false">
               <div class="map-controls">
                 <div class="map-btn" onclick="mapZoom(0.3)">+</div>
                 <div class="map-btn" onclick="mapZoom(-0.3)">−</div>
@@ -546,6 +548,27 @@ const T=[
   {n:"Výslech osoby",c:"DOC-07",h:()=>[`<div class="line"><span class="ll">Výslech z akce </span><input class="f" placeholder="název akce" style="min-width:100px"><span class="ll"> v </span><input class="f" placeholder="čas a datum" style="min-width:130px"></div>`,SP,L('Jméno a příjmení: ','Jméno Příjmení',180),L('Datum narození: ','DD.MM.YYYY',110),SP,TA('Výslech:','Průběh...',4),SP,S(sig())].join('')},
   {n:"Uzavření dálnice",c:"DOC-08",h:()=>[`<div class="line"><span class="ll">/pol Dálnice </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="ll"> je uzavřena mezi body </span><input class="f" placeholder="XXX" style="min-width:55px"><span class="ll"> z důvodu </span><input class="f" placeholder="důvod" style="min-width:120px"><span class="ll">.</span></div>`,S(`Uzavřená oblast by mohla být pro občany nebezpečná, prosíme abyste do oblasti nevstupovali.`),S(`Dbejte výzev policie a použijte objízdné trasy. Jinak TZ SA, Část 2, Hlava 7, §59.`)].join('')},
   {n:"Uzavření oblasti",c:"DOC-09",h:()=>[`<div class="line"><span class="ll">/pol Oblast </span><input class="f" placeholder="XXX" style="min-width:80px"><span class="ll"> je uzavřena z důvodu </span><input class="f" placeholder="důvod" style="min-width:150px"><span class="ll">.</span></div>`,S(`Uzavřená oblast by mohla být nebezpečná, prosíme abyste do oblasti nevstupovali a dbali výzev policie.`),S(`Jinak TZ SA, Část 2, Hlava 7, §59 – Neuposlechnutí výzvy úřední osoby.`)].join('')},
+  {n:"Odcizená výbava",c:"DOC-10",h:()=>[
+    L('**Volací znak, jméno:** ','Volací znak + Jméno Příjmení',220),
+    L('**BN:** ','číslo BN',120),
+    L('**Ukradená výbava:** ','popis odcizené výbavy',250),
+    SP,
+    L('**Čas:** ','HH:MM',80),
+    TA('**Popis situace:**','Popište okolnosti odcizení...',3),
+  ].join('')},
+  {n:"Trestní oznámení",c:"DOC-11",h:()=>[
+    L('**Trestní oznámení na:** ','Jméno Příjmení',200),
+    L('**Oznamovatel:** ','Jméno Příjmení',200),
+    L('**Datum narození:** ','DD.MM.YYYY',110),
+    L('**Telefon:** ','+420 xxx xxx xxx',150),
+    L('**Email:** ','email@example.com',180),
+    SP,
+    TA('**Oznámení:**','Popište trestný čin, okolnosti, důkazy...',4),
+    SP,
+    L('**Případ řeší:** ','Jméno Příjmení – hodnost',220),
+    SP,
+    L('**Závěr:** ','výsledek/stav případu',250),
+  ].join('')},
 ];
 
 function ar(el){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
